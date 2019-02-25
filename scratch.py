@@ -10,19 +10,17 @@ __doc__ = \
 import json payload. Reads either from file, or from stdin.
 """
 
-dummyBank = {'bank': 
-                {
+dummyBank = {
                 'website': 'https://www.example.com',
-                'logo': '',
-                'id':'psd201-bank-x--uk',
-                'short_name': 'Bank X', 
-                'full_name':'The Bank of X'
+                'logo': 'https://static.openbankproject.com/images/sandbox/bank_x.png',
+                'id':'psd201-bank-y--uk',
+                'short_name': 'Bank Z', 
+                'full_name':'The Bank of Y'
         
-                }
-    }
+            }
 
 dummyAccount = {
-                'owners': ['robert.xuk.x@example.com'],
+                'owners': ['robert.yuk.y@example.com'],
                 'generate_auditors_view': True,
                 'number': '13759969699',
                 'label': 'Robert XUk X - M35 ..699',
@@ -33,21 +31,21 @@ dummyAccount = {
                             'amount': '8084.32'},
                 'type': 'CURRENT PLUS',
                 'id': '05237266-b334-4704-a087-5b460a2ecf04',
-                'bank': 'psd201-bank-x--uk'
+                'bank': 'psd201-bank-y--uk'
                }
 
 dummyUser = {
         'display_name': 'Robert XUk X',
         'password': '5232e7',
-        'user_name': 'robert.xuk.x@example.com',
-        'email': 'robert.xuk.x@example.com'
+        'user_name': 'robert.yuk.y@example.com',
+        'email': 'robert.yuk.y@example.com'
 }
 
 dummyTransaction = {
     'id': 'b52a3465-d484-4b9a-97da-308188af7c6a',
     'counterparty': { 'name': 'British Gas' },
     'this_account': { 'id': '05237266-b334-4704-a087-5b460a2ecf04',
-                      'bank': 'psd201-bank-x--uk'
+                      'bank': 'psd201-bank-y--uk'
                     
     },
     'details': {
@@ -62,6 +60,8 @@ dummyTransaction = {
 
 payload = {'banks': [dummyBank], 'accounts': [dummyAccount], 
             'users': [dummyUser], 'transactions': [dummyTransaction]}
+
+print json.dumps(payload)
 
 def convert(text):
     fp = io.StringIO(unicode(rawtext))
