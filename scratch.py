@@ -27,14 +27,41 @@ dummyAccount = {
                 'number': '13759969699',
                 'label': 'Robert XUk X - M35 ..699',
                 'IBAN':  'BA12 1234 5123 4513 7599 6969 977',
-                'generate_public_view': false,
-                'generate_accountants_view': true,
+                'generate_public_view': False,
+                'generate_accountants_view': True,
                 'balance': {'currency' : 'GBP',
                             'amount': '8084.32'},
                 'type': 'CURRENT PLUS',
                 'id': '05237266-b334-4704-a087-5b460a2ecf04',
                 'bank': 'psd201-bank-x--uk'
                }
+
+dummyUser = {
+        'display_name': 'Robert XUk X',
+        'password': '5232e7',
+        'user_name': 'robert.xuk.x@example.com',
+        'email': 'robert.xuk.x@example.com'
+}
+
+dummyTransaction = {
+    'id': 'b52a3465-d484-4b9a-97da-308188af7c6a',
+    'counterparty': { 'name': 'British Gas' },
+    'this_account': { 'id': '05237266-b334-4704-a087-5b460a2ecf04',
+                      'bank': 'psd201-bank-x--uk'
+                    
+    },
+    'details': {
+        'description': 'Gas/Elec',
+        'completed': '2015-07-01T00:00:00.000Z',
+        'value': '-114.55',
+        'new_balance': '114.55',
+        'type': '10219',
+        'posted': '2015-07-01T00:00:00.000Z'
+    }
+}
+
+payload = {'banks': [dummyBank], 'accounts': [dummyAccount], 
+            'users': [dummyUser], 'transactions': [dummyTransaction]}
 
 def convert(text):
     fp = io.StringIO(unicode(rawtext))
