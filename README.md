@@ -16,7 +16,10 @@ to help with demos, developer experience, and evaluation.
 
 The following posts to stdout a valid Open Bank Project payload, which gets inserted into it's database. 
 
-    python scratch.py -f test.txt 2>/dev/null | curl -d @- -X POST -H "Content-Type: application/json" -H 'Authorization: DirectLogin token="<TOKEN>"' http://localhost:8080/obp/v2.1.0/sandbox/data-import
+    python scratch.py -f test.ofx 2>/dev/null | curl -d @- -X POST -H "Content-Type: application/json" -H 'Authorization: DirectLogin token="<TOKEN>"' http://localhost:8080/obp/v2.1.0/sandbox/data-import
+
+test.ofx was generated using [fixofx](https://github.com/chrisjsimpson/fixofx#command-line-operation)
+
 
 Do a call to `/banks` or similar to verify data was added:
 
