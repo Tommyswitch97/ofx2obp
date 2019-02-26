@@ -1,6 +1,7 @@
 import os
 import io
 import sys
+import uuid
 import json
 from optparse import OptionParser
 from ofxparse import OfxParser
@@ -9,6 +10,8 @@ __doc__ = \
 """Convert a valid OFX 2.0 data into a valid Open Bank Project 
 import json payload. Reads either from file, or from stdin.
 """
+
+dummyEmail = ''.join([str(uuid.uuid4()), '@example.com'])
 
 dummyBank = {
                 'website': 'https://www.example.com',
@@ -35,10 +38,10 @@ dummyAccount = {
                }
 
 dummyUser = {
-        'display_name': 'Robert XUk X',
+        'display_name': dummyEmail[0:32],
         'password': '5232e7',
-        'user_name': 'robert.yuk.y@example.com',
-        'email': 'robert.yuk.y@example.com'
+        'user_name': dummyEmail[0:32],
+        'email': dummyEmail
 }
 
 dummyTransaction = {
@@ -58,22 +61,63 @@ dummyTransaction = {
     }
 }
 
-payload = {'banks': [dummyBank], 'accounts': [dummyAccount], 
-            'users': [dummyUser], 'transactions': [dummyTransaction]}
-
-print json.dumps(payload)
-
 def convert(text):
     fp = io.StringIO(unicode(rawtext))
     # Parse OFX
-    parsed = OfxParser.parse(fp)
-    pass
+    ofx = OfxParser.parse(fp)
+    account = ofx.account
+    institution = account.institution
+    statement = account.statement
+    transactions = statement.transactions
 
-#f = open('dummy.json')
-#raw = f.read()
+    # Build bank object
+    bankObj = {
+        'website' : 'https://example.com',
+        'logo' : 'https://static.openbankproject.com/images/sandbox/bank_x.png',
+        'id' : institution.organization,
+        'short_name' : institution.organization,
+        'full_name' : institution.organization
+    }
+    #import pdb;pdb.set_trace()
+    # Build account object
+    accountObj = {
+        'owners': [dummyEmail[0:32]],
+        'generate_auditors_view': True,
+        'number': account.number,
+        'label': account.account_type,
+        'IBAN':  account.routing_number, #Wrong
+        'generate_public_view': False,
+        'generate_accountants_view': True,
+        'balance': {'currency' : account.curdef,
+                    'amount': float(statement.balance)},
+        'type': account.account_type,
+        'id': account.account_id,
+        'bank': institution.organization
+    }
 
-#data = json.loads(raw)
-#print data.keys()
+    # Build transaction object
+    transactionObj = {
+        'id': transactions[0].id,
+        'counterparty': { 'name': transactions[0].payee },
+        'this_account': { 'id': account.account_id,
+                          'bank': institution.organization
+                        
+        },
+        'details': {
+            'description': transactions[0].payee,
+            'completed': '2015-07-01T00:00:00.000Z',
+            'value': float(transactions[1].amount),
+            'new_balance': '114.55', #Wrong
+            'type': transactions[1].type,
+            'posted': '2015-07-01T00:00:00.000Z'
+        }
+    }
+
+    payload = {'banks': [bankObj], 'accounts': [accountObj], 
+                    'users': [dummyUser], 'transactions': [transactionObj]}
+
+    print json.dumps(payload)
+
 
 
 parser = OptionParser(description=__doc__)
