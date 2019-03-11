@@ -78,7 +78,6 @@ def convert(text):
         'short_name' : institution.organization,
         'full_name' : institution.organization
     }
-    #import pdb;pdb.set_trace()
     # Build account object
     accountObj = {
         'owners': [dummyEmail[0:32]],
@@ -96,22 +95,43 @@ def convert(text):
     }
 
     # Build transaction object
-    transactionObj = {
-        'id': transactions[0].id,
-        'counterparty': { 'name': transactions[0].payee },
-        'this_account': { 'id': account.account_id,
-                          'bank': institution.organization
-                        
-        },
-        'details': {
-            'description': transactions[0].payee,
-            'completed': '2015-07-01T00:00:00.000Z',
-            'value': float(transactions[1].amount),
-            'new_balance': '114.55', #Wrong
-            'type': transactions[1].type,
-            'posted': '2015-07-01T00:00:00.000Z'
+    transactionsObj = [] # list of transactions
+    for transaction in transactions:
+        try:
+            transactionId = transaction.id
+        except AttributeError:
+            transactionId = ''
+        try: 
+            payee = transaction.payee
+        except AttributeError:
+            payee = ''
+        try: 
+            amount = transaction.amount
+        except AttributeError:
+            amount = 0
+        try:
+            transactionType = transaction.type
+        except AttributeError:
+            transactionType = ''
+
+        transactionObj = {
+            'id': transactionId,
+            'counterparty': { 'name': payee },
+            'this_account': { 'id': account.account_id,
+                              'bank': institution.organization
+                            
+            },
+            'details': {
+                'description': payee,
+                'completed': '2015-07-01T00:00:00.000Z',
+                'value': float(amount),
+                'new_balance': '114.55', #Wrong
+                'type': transactionType,
+                'posted': '2015-07-01T00:00:00.000Z'
+            }
         }
-    }
+        transactionsObj.append(transactionObj)
+
 
     payload = {'banks': [bankObj], 'accounts': [accountObj], 
                     'users': [dummyUser], 'transactions': [transactionObj]}
