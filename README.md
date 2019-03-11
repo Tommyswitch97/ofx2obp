@@ -22,6 +22,12 @@ virtualenv -p python3 venv
 - logged in via the api (e.g. via token login method)
 - a 'super admin' (your user id must be in the 'super users' in the props file)
 
+### Convert valid OFX file into valid OBP import payload to stdout
+```
+python scratch.py -f test.ofx
+```
+### Convert valid OFX file into valid OBP and post into an OBP instance using curl
+
 The following posts to stdout a valid Open Bank Project payload, which gets inserted into it's database. 
 
     python scratch.py -f test.ofx 2>/dev/null | curl -d @- -X POST -H "Content-Type: application/json" -H 'Authorization: DirectLogin token="<TOKEN>"' http://localhost:8080/obp/v2.1.0/sandbox/data-import
