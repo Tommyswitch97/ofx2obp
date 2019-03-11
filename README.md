@@ -7,7 +7,15 @@ to help with demos, developer experience, and evaluation.
 - Convert to Open Bank Project [valid import structure](https://raw.githubusercontent.com/OpenBankProject/OBP-API/develop/src/main/scala/code/api/sandbox/example_data/2016-04-28/example_import.json)
 - HTTP POST payload to Open Bank Project instance
 
-## Example post
+## Install
+
+```
+virtualenv -p python3 venv
+./venv/bin/activate
+```
+
+
+## Run / Example post to OBP instance
 
 **Note:** For this to work, you must be:
 
