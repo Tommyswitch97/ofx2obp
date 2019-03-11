@@ -11,7 +11,7 @@ to help with demos, developer experience, and evaluation.
 
 ```
 virtualenv -p python3 venv
-./venv/bin/activate
+. venv/bin/activate
 ```
 
 
