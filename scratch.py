@@ -62,7 +62,7 @@ dummyTransaction = {
 }
 
 def convert(text):
-    fp = io.StringIO(unicode(rawtext))
+    fp = io.StringIO(str(rawtext))
     # Parse OFX
     ofx = OfxParser.parse(fp)
     account = ofx.account
@@ -116,7 +116,7 @@ def convert(text):
     payload = {'banks': [bankObj], 'accounts': [accountObj], 
                     'users': [dummyUser], 'transactions': [transactionObj]}
 
-    print json.dumps(payload)
+    print(json.dumps(payload))
 
 
 
@@ -134,16 +134,16 @@ if options.filename:
             srcfile = open(options.filename, 'rU')
             rawtext = srcfile.read()
             srcfile.close()
-        except StandardError, detail:
-            print "Exception during file read:\n%s" % detail
-            print "Exiting."
+        except Exception as detail:
+            print("Exception during file read:\n%s" % detail)
+            print("Exiting.")
             sys.stderr.write("ofx2obp failed with error code 1\n")
             sys.exit(1)
 else:
     stdin_universal = os.fdopen(os.dup(sys.stdin.fileno()), "rU")
     rawtext = stdin_universal.read()
-    print "No input.  Pipe a file to convert to the script,\n" + \
-          "or call with -f. " 
+    print("No input.  Pipe a file to convert to the script,\n" + \
+          "or call with -f. ")
     sys.stderr.write("ofx2obp failed with error code 3\n")
     sys.exit(3)
 
@@ -152,8 +152,8 @@ else:
 # 
 try:
     converted = convert(rawtext)
-except StandardError, detail:
-    print "Exception during file read:\n%s" % detail
-    print "Exiting."
+except Exception as detail:
+    print("Exception during file read:\n%s" % detail)
+    print ("Exiting.")
     sys.stderr.write("ofx2obp failed with error code 1\n")
     sys.exit(1)
