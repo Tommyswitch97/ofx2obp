@@ -123,11 +123,11 @@ def convert(text):
             },
             'details': {
                 'description': payee,
-                'completed': '2015-07-01T00:00:00.000Z',
+                'completed': transaction.date.strftime('%Y-%m-%dT%H:%M:%S.%fZ'),
                 'value': float(amount),
                 'new_balance': '114.55', #Wrong
                 'type': transactionType,
-                'posted': '2015-07-01T00:00:00.000Z'
+                'posted': transaction.date.strftime('%Y-%m-%dT%H:%M:%S.%fZ')
             }
         }
         transactionsObj.append(transactionObj)
